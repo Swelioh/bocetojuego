@@ -1,0 +1,41 @@
+import protagonista.*
+import enemigos.*
+
+describe "tests del protagonista" {
+
+  test "Protagonista comienza con vida completa" {
+    assert.equals(100, protagonista.personajeVida())
+  }
+
+  test "Protagonista pierde vida al recibir daño" {
+    const vidaInicial = protagonista.personajeVida()
+    const danioRecibido = 50
+    protagonista.restarVida(danioRecibido)
+    assert.equals(vidaInicial - danioRecibido, protagonista.personajeVida())
+  }
+
+  test "Protagonista no tiene vida negativa" {
+    protagonista.restarVida(250)
+    assert.equals(0, protagonista.personajeVida())
+  }
+
+}
+
+describe "tests del maniquí" {
+
+  test "Maniquí comienza con vida completa" {
+    assert.equals(9999, maniqui.vida())
+  }
+
+  test "Maniqui recibe daño correctamente" {
+    const vidaInicial = maniqui.vida()
+    const danioRecibido = 30
+    maniqui.recibirGolpe(danioRecibido)
+    assert.equals(vidaInicial - danioRecibido, maniqui.vida())
+  }
+
+  test "Maniqui muere y aumenta el contador de enemigos derrotados" {
+    maniqui.morir()
+    assert.equals(1, enemigos.contadorEnemigos())
+  }
+}
