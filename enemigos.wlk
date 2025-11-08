@@ -250,7 +250,7 @@ class EnemigoVolador inherits Enemigo {
     }
 }
 
-const maniqui = new Enemigo(nombre = "maniqui",vidaInicial = 9999,vida = 9999,danioDeGolpes = 0,image = "maniquiIzquierdaQuieto.png",animGolpeado = 3,sonidoGolpe = "golpemaniqui.wav",positionInicial = game.at(40, 1))
+const maniqui = new Enemigo(nombre = "maniqui",vidaInicial = 100,vida = 100,danioDeGolpes = 0,image = "maniquiIzquierdaQuieto.png",animGolpeado = 3,sonidoGolpe = "golpemaniqui.wav",positionInicial = game.at(40, 1))
 
 const hongo = new EnemigoCaminador(nombre = "mushRoom",position = game.at(20, 1), danioDeGolpes = 50, vida = 10,vidaInicial = 10,image = "mushRoomIzquierdaQuieto.png",animMoviendose = 8,animGolpeado = 5,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(20, 1))
 
