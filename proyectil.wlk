@@ -2,7 +2,7 @@ import protagonista.*
 class Proyectil {
     var property image = "proyectil.png"
     var property position = game.at(0, 0)
-    var property velocidadY = -1
+    var property velocidadY = -0.25
     const danio
     const posX
     const posY

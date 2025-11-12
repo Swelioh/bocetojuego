@@ -32,8 +32,8 @@ class Enemigo{
     var property animGolpeado = 1
     var property animAtaque = 1
 
-    var frameActual = 0
-    var estaMoviendose = false
+    var property frameActual = 0
+    var property estaMoviendose = false
 
     var property velocidadX = 0
     var property aceleracion = 0.05
@@ -62,16 +62,13 @@ class Enemigo{
         return direccionHorizontal.imagenDerrotado(self.nombre())
     }
 
-    method reiniciar() {
+     method reiniciar() {
         estaVivo = true
         vida = vidaInicial
         position = positionInicial
         timerImpacto = 0
         frameActual = 0
         estaMoviendose = false
-        velocidadX = 0
-        // (Añadimos esto para el murciélago)
-        if (nombre == "bat") { velocidadX = 0.5 } 
         image = self.reposo()
     }
 
@@ -103,7 +100,7 @@ class Enemigo{
         estaVivo = false
         image = self.derrotado()
         enemigos.incrementarContador()
-        //mapa.mapaActual().agregarEnemigos()
+        mapa.mapaActual().agregarEnemigos()
         position = game.at(-999, -999)
         //game.removeVisual(self)
     }
@@ -185,7 +182,6 @@ class EnemigoCaminador inherits Enemigo {
                 if (animacion.size() > 0) {
                     const frameIndex = frameActual % animacion.size()
                     image = animacion.get(frameIndex)
-
                     frameActual += 1
                 }
             } 
@@ -243,7 +239,6 @@ class EnemigoVolador inherits Enemigo {
             if (animacion.size() > 0) {
                 const frameIndex = frameActual % animacion.size()
                 image = animacion.get(frameIndex)
-
                 frameActual += 1
             } 
         }
@@ -252,6 +247,10 @@ class EnemigoVolador inherits Enemigo {
 
 const maniqui = new Enemigo(nombre = "maniqui",vidaInicial = 9999,vida = 9999,danioDeGolpes = 0,image = "maniquiIzquierdaQuieto.png",animGolpeado = 3,sonidoGolpe = "golpemaniqui.wav",positionInicial = game.at(40, 1))
 
-const hongo = new EnemigoCaminador(nombre = "mushRoom",position = game.at(20, 1), danioDeGolpes = 50, vida = 10,vidaInicial = 10,image = "mushRoomIzquierdaQuieto.png",animMoviendose = 8,animGolpeado = 5,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(20, 1))
+const hongo = new EnemigoCaminador(nombre = "mushRoom", danioDeGolpes = 50, vidaInicial = 10,image = "mushRoomIzquierdaQuieto.png",animMoviendose = 8,animGolpeado = 5,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(20, 1))
 
-const murcielago = new EnemigoVolador(nombre = "bat",position = game.at(5, 20), danioDeGolpes = 15, danioProyectil = 10, vida = 50,vidaInicial = 50,image = "batIzquierdaQuieto.png", velocidadX = 0.3, animMoviendose = 4,animGolpeado = 3,sonidoGolpe = "batHit.wav",positionInicial = game.at(5, 20) )
+const murcielago = new EnemigoVolador(nombre = "bat", danioDeGolpes = 15, danioProyectil = 10, vidaInicial = 50,image = "batIzquierdaQuieto.png", velocidadX = 0.5, animMoviendose = 4,animGolpeado = 3,sonidoGolpe = "batHit.wav",positionInicial = game.at(15, 11) )
+
+const hongo2 = new EnemigoCaminador(nombre = "mushRoom", danioDeGolpes = 50, vidaInicial = 10,image = "mushRoomIzquierdaQuieto.png",animMoviendose = 8,animGolpeado = 5,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(30, 1))
+
+const hongoVolador = new EnemigoVolador(nombre = "hongoVolador", danioDeGolpes = 15, danioProyectil = 10, vidaInicial = 50,image = "batIzquierdaQuieto.png", velocidadX = 0.5, animMoviendose = 4,animGolpeado = 3,sonidoGolpe = "batHit.wav",positionInicial = game.at(15, 11) )

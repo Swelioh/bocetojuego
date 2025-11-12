@@ -4,6 +4,7 @@ import protagonista.*
 import enemigos.*
 import hud.*
 
+
 object controlacion {
     // --- Nombres constantes para los timers ---
     const nombreTickGeneral = "actualizacion general"
@@ -17,7 +18,8 @@ object controlacion {
         keyboard.q().onPressDo({ => protagonista.atacar() })
         keyboard.n().onPressDo({ => mapa.siguienteMapa() })
         keyboard.w().onPressDo({ protagonista.alternarEscudo() })
-        
+        keyboard.e().onPressDo({ => protagonista.intentarDash() })
+
         // --- GAME TICKS ---
         
         // Detener timers antiguos si existen
@@ -25,7 +27,7 @@ object controlacion {
 
         // Iniciar nuevos timers usando los nombres constantes
         game.onTick(50, nombreTickGeneral, { => protagonista.actualizar() })
-        game.onTick(50, nombreTickEnemigos, { mapa.mapaActual().listaEnemigos().forEach({ enemigo => enemigo.actualizar() })})
+        game.onTick(50, nombreTickEnemigos, { => mapa.mapaActual().listaEnemigos().forEach({ enemigo => enemigo.actualizar() })})
     }
     
     // --- MÉTODO DETENER (MODIFICADO) ---

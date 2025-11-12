@@ -75,8 +75,8 @@ method ejecutarOpcion(opcion) {
     if (opcion == 1) {
 
         mapa.siguienteMapa()
-        //controlacion.configuracionControles()
-     
+
+
     }
     else if (opcion == 2) {
      
@@ -100,23 +100,36 @@ method ejecutarOpcion(opcion) {
 
 
 object finDelJuego {
-    method position() = game.at(10, 8)
-    method image() = "fin.png"
+    method position() = game.at(0, 0)
+    method image() = "gameOver.png"
 
     // Marca si ya se agregó el listener
     var property listenerAgregado = false
-
+    var property musicaMuerte = null
     // Método para agregar el listener solo una vez
     method agregarListener() {
         if (not listenerAgregado) {
             listenerAgregado = true
             keyboard.r().onPressDo({
                 =>
+                if (musicaMuerte != null) {
+                    musicaMuerte.stop()
+                    musicaMuerte = null
+                }
                 controlacion.detenerTimers()
                 game.clear()
                 mapa.reiniciar()
                 listenerAgregado = false
             })
+        }
+    }
+
+    method sonarMusica() {
+        // Verificamos si ya está sonando para no duplicarla
+        if (musicaMuerte == null) { 
+            musicaMuerte = game.sound("muerte2.wav") 
+            musicaMuerte.volume(0.10)
+            musicaMuerte.play()
         }
     }
 }

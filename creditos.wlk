@@ -6,7 +6,7 @@ object credito {
   method visualizar() {
     game.clear()
     game.addVisual(fondoCredito)
-
+    
 
     keyboard.z().onPressDo{
         menu.reiniciar()

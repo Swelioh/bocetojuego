@@ -166,11 +166,9 @@ object protagonista {
     const costeEnergiaDash = 25
     const distanciaDash = 5
     const duracionDash = 8
-    const sonidoDash = game.sound("dash1.wav")
+    const sonidoDash = game.sound("dash.wav")
 
-    if (estaHaciendoDash or estaAtacando or estaBloqueando or energiaEscudo < costeEnergiaDash) { /*no hace nada*/ }
-    else{
-
+    if (!estaHaciendoDash or !estaAtacando or !estaBloqueando or energiaEscudo > costeEnergiaDash) {
     estaHaciendoDash = true
     invenciblePorDash = true 
     timerDash = duracionDash
@@ -184,9 +182,8 @@ object protagonista {
     const xLimitada = nuevaX.max(-1).min(53) //Limita los bordes del mapa
 
     position = game.at(xLimitada, position.y())
-   
+    
     sonidoDash.play()
-    sonidoDash.setVolume(0.4)
     }
     
 }
