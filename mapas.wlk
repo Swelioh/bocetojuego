@@ -71,7 +71,7 @@ class FondoNivel{
 
 // 2. LUEGO LAS CONSTANTES (los "objetos" creados a partir de los moldes)
 const tutorial = new TipoMapa(nivel = new Nivel(numero = 1), fondo = new FondoNivel(imagen="Summer1.png"), listaEnemigos = [maniqui], nombreMusica = "theShire.wav")
-const bosque = new TipoMapa(nivel = new Nivel(numero = 2), fondo = new FondoNivel(imagen="bosques.png"), listaEnemigos = [hongo,hongoVolador,hongo2,hongo3,hongo],nombreMusica = "")
+const bosque = new TipoMapa(nivel = new Nivel(numero = 2), fondo = new FondoNivel(imagen="bosques.png"), listaEnemigos = [hongo,hongoVolador,hongo2,hongo3],nombreMusica = "")
 const cueva = new TipoMapa(nivel = new Nivel(numero = 3), fondo = new FondoNivel(imagen="cueva2.png"), listaEnemigos = [murcielago,golem,golem2])
 const pantano = new TipoMapa(nivel = new Nivel(numero = 4), fondo = new FondoNivel(imagen="pantano.png"), listaEnemigos = [sapo])
 //const mapaFinal = new TipoMapa(nivel = new Nivel(numero = 5), fondo = new FondoNivel(imagen="finalMap.png"), listaEnemigos = [hongo])

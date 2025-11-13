@@ -14,25 +14,30 @@ object enemigos {
   
   method registrarMuerte(enemigo) {
     const mapaActual = mapa.mapaActual()
-
+    var cambioDeMapa = false
     // Si estamos en el tutorial, solo avanzamos si muere el maniqui
     if (mapaActual == tutorial) {
         if (enemigo == maniqui) {
             contador = 1 
             mapa.siguienteMapa()
+            cambioDeMapa = true
         }
    
     } else if (mapaActual == cueva) {
         contador += 1
         if (contador >= 3) {
             mapa.siguienteMapa()
+            cambioDeMapa = true
         }
     }else {
         contador += 1
-        if (contador >= 5) {
+        if (contador >= 4) {
             mapa.siguienteMapa()
+            cambioDeMapa = true
         }
+     return cambioDeMapa
     }
+    
   }
 
   // Agregamos un método para reiniciar el contador
@@ -128,10 +133,23 @@ class Enemigo{
     method morir() {
         estaVivo = false
         image = self.derrotado()
-        enemigos.registrarMuerte(self)
-        mapa.mapaActual().agregarEnemigos()
-        position = game.at(-999, -999)
-        //game.removeVisual(self)
+
+        // 1. Registramos la muerte y vemos si hay cambio de mapa
+        const cambioDeMapa = enemigos.registrarMuerte(self) 
+      
+        mapa.mapaActual().listaEnemigos().remove(self)
+
+        // 3. (FIX DEL LAG) Lo eliminamos visualmente del juego
+        // ¡DESCOMENTA ESTA LÍNEA!
+        game.removeVisual(self)
+        
+        // 4. (FIX DEL CRASH) Solo agregamos un nuevo enemigo si NO cambiamos de mapa
+        if (not cambioDeMapa) {
+            mapa.mapaActual().agregarEnemigos()
+        }
+
+        // 5. Ya no necesitamos moverlo, porque lo eliminamos
+        // position = game.at(-999, -999) // Esta línea ya no es necesaria
     }
 
    method actualizar() {
@@ -293,10 +311,10 @@ class EnemigoVolador inherits Enemigo {
 
     method aplicarFisicaHorizontal() {
         if (position.x() > bordeDerecho) {
-            velocidadX = 0.5
+            velocidadX = 0.2
             direccionHorizontal = izquierda
         } else if (position.x() < bordeIzquierdo) {
-            velocidadX = -0.5
+            velocidadX = -0.2
             direccionHorizontal = derecha
         }
         position = position.left(velocidadX)
@@ -323,7 +341,7 @@ const maniqui = new Enemigo(nombre = "maniqui",vidaInicial = 100,vida = 100,dani
 const hongo = new EnemigoCaminador(nombre = "mushRoom", danioDeGolpes = 20, vidaInicial = 75,vida = 75,image = "mushRoomIzquierdaQuieto.png",animMoviendose = 8,animAtaque = 10,animGolpeado = 5,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(20, 1))
 const hongo2 = new EnemigoCaminador(nombre = "mushRoom", danioDeGolpes = 20, vidaInicial = 75,vida = 75,image = "mushRoomIzquierdaQuieto.png",animMoviendose = 8,animAtaque = 10,animGolpeado = 5,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(30, 1))
 const hongo3 = new EnemigoCaminador(nombre = "mushRoom", danioDeGolpes = 20, vidaInicial = 75,vida = 75,image = "mushRoomIzquierdaQuieto.png",animMoviendose = 8,animAtaque = 10,animGolpeado = 5,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(40, 1))
-const hongo4 = new EnemigoCaminador(nombre = "mushRoom", danioDeGolpes = 20, vidaInicial = 75,vida = 75,image = "mushRoomIzquierdaQuieto.png",animMoviendose = 8,animAtaque = 10,animGolpeado = 5,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(50, 1))
+
 
 const murcielago = new EnemigoVolador(nombre = "bat", danioDeGolpes = 15, danioProyectil = 10, vidaInicial = 50,image = "batIzquierdaQuieto.png", velocidadX = 0.5, animMoviendose = 4,animGolpeado = 3,sonidoGolpe = "batHit.wav",positionInicial = game.at(15, 11),imagenProyectil = "proyectil_murcielago.png" )
 
