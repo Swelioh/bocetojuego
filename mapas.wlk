@@ -8,7 +8,7 @@ import menu.*
 // 1. PRIMERO LAS CLASES (los "moldes")
 class Nivel {
   const numero = 0
-  var property position = game.at(20,15)
+  var property position = game.at(15,18)
   method image() = "nivel" + numero + ".png"
 }
 
@@ -29,14 +29,14 @@ class TipoMapa {
     game.addVisual(nivel)
     self.agregarEnemigos()
     self.agregarEnemigos()
-    self.agregarEnemigos()
+    
     if (nombreMusica != null) {
       musicaObjeto = game.sound(nombreMusica)
       musicaObjeto.shouldLoop(true) // Le decimos que se repita
       musicaObjeto.volume(0.15)
       musicaObjeto.play() // Lo reproducimos
     }
-    game.schedule(5000, { => game.removeVisual(nivel) })
+    game.schedule(3000, { => game.removeVisual(nivel) })
 
     game.addVisual(barraDeVida)     
     game.addVisual(barraDeEnergia)
@@ -73,7 +73,7 @@ class FondoNivel{
 const tutorial = new TipoMapa(nivel = new Nivel(numero = 1), fondo = new FondoNivel(imagen="Summer1.png"), listaEnemigos = [maniqui], nombreMusica = "theShire.wav")
 const bosque = new TipoMapa(nivel = new Nivel(numero = 2), fondo = new FondoNivel(imagen="bosques.png"), listaEnemigos = [hongo,hongoVolador,hongo2,hongo3],nombreMusica = "")
 const cueva = new TipoMapa(nivel = new Nivel(numero = 3), fondo = new FondoNivel(imagen="cueva2.png"), listaEnemigos = [murcielago,golem,golem2])
-const pantano = new TipoMapa(nivel = new Nivel(numero = 4), fondo = new FondoNivel(imagen="pantano.png"), listaEnemigos = [sapo])
+const pantano = new TipoMapa(nivel = new Nivel(numero = 4), fondo = new FondoNivel(imagen="pantano2.png"), listaEnemigos = [sapo,sapo2,monstruo,monstruo2])
 //const mapaFinal = new TipoMapa(nivel = new Nivel(numero = 5), fondo = new FondoNivel(imagen="finalMap.png"), listaEnemigos = [hongo])
 
 
@@ -100,7 +100,7 @@ object mapa {
       enemigos.reiniciarContador()
       controlacion.detenerTimers()
       nuevoMapa.iniciar()
-      indiceNivel =+ 1
+      indiceNivel += 1
     }
   }
 

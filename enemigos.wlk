@@ -35,9 +35,9 @@ object enemigos {
             mapa.siguienteMapa()
             cambioDeMapa = true
         }
-     return cambioDeMapa
+     
     }
-    
+    return cambioDeMapa
   }
 
   // Agregamos un método para reiniciar el contador
@@ -134,22 +134,19 @@ class Enemigo{
         estaVivo = false
         image = self.derrotado()
 
-        // 1. Registramos la muerte y vemos si hay cambio de mapa
+    
         const cambioDeMapa = enemigos.registrarMuerte(self) 
       
-        mapa.mapaActual().listaEnemigos().remove(self)
+     
 
-        // 3. (FIX DEL LAG) Lo eliminamos visualmente del juego
-        // ¡DESCOMENTA ESTA LÍNEA!
+    
         game.removeVisual(self)
-        
-        // 4. (FIX DEL CRASH) Solo agregamos un nuevo enemigo si NO cambiamos de mapa
+      
         if (not cambioDeMapa) {
+            mapa.mapaActual().listaEnemigos().remove(self)
             mapa.mapaActual().agregarEnemigos()
         }
-
-        // 5. Ya no necesitamos moverlo, porque lo eliminamos
-        // position = game.at(-999, -999) // Esta línea ya no es necesaria
+        game.removeVisual(self)
     }
 
    method actualizar() {
@@ -352,3 +349,6 @@ const golem2 = new EnemigoCaminador(nombre = "golem", danioDeGolpes = 10, vidaIn
 
 const sapo = new EnemigoCaminador(nombre = "sapo", danioDeGolpes = 20, vidaInicial = 100,vida = 100,image = "sapoIzquierdaQuieto.png",animMoviendose = 7,animAtaque = 8,animGolpeado = 4,sonidoGolpe = "sapoHit.wav",positionInicial = game.at(30, 1))
 const sapo2 = new EnemigoCaminador(nombre = "sapo", danioDeGolpes = 20, vidaInicial = 100,vida = 100,image = "sapoIzquierdaQuieto.png",animMoviendose = 7,animAtaque = 8,animGolpeado = 4,sonidoGolpe = "sapoHit.wav",positionInicial = game.at(45, 1))
+
+const monstruo = new EnemigoVolador(nombre = "monstruo", danioDeGolpes = 15, danioProyectil = 10, vidaInicial = 50,image = "monstruoIzquierdaMoviendose1.png", velocidadX = 0.2, animMoviendose = 5,animGolpeado = 1,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(15, 11),imagenProyectil = "proyectilmonstruo.png" )
+const monstruo2 = new EnemigoVolador(nombre = "monstruo", danioDeGolpes = 15, danioProyectil = 10, vidaInicial = 50,image = "monstruoIzquierdaMoviendose1.png", velocidadX = 0.2, animMoviendose = 5,animGolpeado = 1,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(15, 11),imagenProyectil = "proyectilmonstruo.png" )
