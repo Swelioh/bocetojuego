@@ -64,6 +64,8 @@ class Enemigo{
     var property estaAtacando = false
     var property timerAtaque = 0
     const property duracionAtaque = 25
+    var property soloDaniaAlAtacar = false
+
 
     var property velocidadX = 0
     var property aceleracion = 0.05
@@ -197,8 +199,9 @@ class Enemigo{
     }
 }
 
-class EnemigoCaminador inherits Enemigo {
+class EnemigoCaminador inherits Enemigo(soloDaniaAlAtacar=true) {
     var property radioDeAgresion = 10
+    
 
     method perseguir() {
         const posProtagonista = protagonista.position()
@@ -350,5 +353,5 @@ const golem2 = new EnemigoCaminador(nombre = "golem", danioDeGolpes = 10, vidaIn
 const sapo = new EnemigoCaminador(nombre = "sapo", danioDeGolpes = 20, vidaInicial = 100,vida = 100,image = "sapoIzquierdaQuieto.png",animMoviendose = 7,animAtaque = 8,animGolpeado = 4,sonidoGolpe = "sapoHit.wav",positionInicial = game.at(30, 1))
 const sapo2 = new EnemigoCaminador(nombre = "sapo", danioDeGolpes = 20, vidaInicial = 100,vida = 100,image = "sapoIzquierdaQuieto.png",animMoviendose = 7,animAtaque = 8,animGolpeado = 4,sonidoGolpe = "sapoHit.wav",positionInicial = game.at(45, 1))
 
-const monstruo = new EnemigoVolador(nombre = "monstruo", danioDeGolpes = 15, danioProyectil = 10, vidaInicial = 50,image = "monstruoIzquierdaMoviendose1.png", velocidadX = 0.2, animMoviendose = 5,animGolpeado = 1,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(15, 11),imagenProyectil = "proyectilmonstruo.png" )
-const monstruo2 = new EnemigoVolador(nombre = "monstruo", danioDeGolpes = 15, danioProyectil = 10, vidaInicial = 50,image = "monstruoIzquierdaMoviendose1.png", velocidadX = 0.2, animMoviendose = 5,animGolpeado = 1,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(15, 11),imagenProyectil = "proyectilmonstruo.png" )
+const monstruo = new EnemigoVolador(nombre = "monstruo", danioDeGolpes = 15, danioProyectil = 10, vidaInicial = 50,image = "monstruoIzquierdaMoviendose1.png", velocidadX = 0.2, animMoviendose = 5,animGolpeado = 4,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(15, 11),imagenProyectil = "proyectil_hongoVolador.png" )
+const monstruo2 = new EnemigoVolador(nombre = "monstruo", danioDeGolpes = 15, danioProyectil = 10, vidaInicial = 50,image = "monstruoIzquierdaMoviendose1.png", velocidadX = 0.2, animMoviendose = 5,animGolpeado = 4,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(15, 11),imagenProyectil = "proyectil_hongoVolador.png" )

@@ -263,12 +263,12 @@ object protagonista {
     method verificarColisionEnemigos() {
         if (timerInvencible <= 0 and not invenciblePorDash) {
        mapa.mapaActual().listaEnemigos().forEach({ enemigo=>
-            if (enemigo.estaVivo() and self.position().distance(enemigo.position()) < 1.5) {
+            if (enemigo.estaVivo() and self.position().distance(enemigo.position()) < 1) {
+                if (not enemigo.soloDaniaAlAtacar() or (enemigo.soloDaniaAlAtacar() and enemigo.estaAtacando())) {
+                    const danioRecibido = enemigo.danioDeGolpes()
+				    var danioFinal = danioRecibido
                 
-                const danioRecibido = enemigo.danioDeGolpes()
-				var danioFinal = danioRecibido
-                
-                if (estaBloqueando) {
+                    if (estaBloqueando) {
 						// Si está bloqueando, reduce el daño
 						danioFinal = danioRecibido * (1 - reduccionDeDanio) // Recibe solo el 25%
 						// Y gasta energía extra por el golpe
@@ -276,17 +276,17 @@ object protagonista {
 						// ACA DEBERIA IR  Sonido de "golpe en escudo"
 					}
                     
-                self.restarVida(danioFinal)
+                    self.restarVida(danioFinal)
                 //  Activamos la invencibilidad
-                timerInvencible = duracionInvencible 
+                    timerInvencible = duracionInvencible 
                   
                     // Llamamos al método de empujón
-                self.recibirEmpujon(enemigo)
-                if (not estaBloqueando or danioFinal > 0) { 
-                        timerInvencible = duracionInvencible 
-                        self.recibirEmpujon(enemigo)
+                    self.recibirEmpujon(enemigo)
+                    if (not estaBloqueando or danioFinal > 0) { 
+                            timerInvencible = duracionInvencible 
+                            self.recibirEmpujon(enemigo)
 					}
-                
+                }
             }
         })
         }
