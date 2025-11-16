@@ -31,3 +31,36 @@ object barraDeEnergia {
 		image = "E" + energiaRedondeada.toString() + ".png"
 	}
 }
+
+
+// --- Objeto para la barra de Vida del BOSS ---
+object barraVidaBoss {
+   
+    var property position = game.at(10, 23) 
+    
+
+    var property image = "bossBar_frame.png" 
+    
+
+    var vidaActual = 100
+    var vidaMaxima = 100
+    
+
+    method setearVidaMaxima(maxima) {
+        vidaMaxima = maxima
+        self.actualizarBarra(maxima)
+    }
+
+
+    method actualizarBarra(actual) {
+        vidaActual = actual.max(0) 
+        
+     
+        const porcentaje = ((vidaActual / vidaMaxima) * 100).round()
+ 
+        const decena = (porcentaje / 10).round() * 10 
+        
+       
+        image = "boss_" + decena.toString() + ".png"
+    }
+}

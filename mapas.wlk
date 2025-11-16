@@ -4,7 +4,7 @@ import enemigos.*
 import hud.*
 import controlacion.*
 import menu.*
-
+import bossFinal.*
 // 1. PRIMERO LAS CLASES (los "moldes")
 class Nivel {
   const numero = 0
@@ -24,6 +24,7 @@ class TipoMapa {
   method iniciar() {
     listaEnemigos.forEach({enemigo => enemigo.reiniciar()})
     enemigos.clear()                         // Vacía la lista actual
+    listaEnemigosEnPantalla.clear()
     enemigos.addAll(listaEnemigos)
     game.addVisual(fondo)
     game.addVisual(nivel)
@@ -40,6 +41,14 @@ class TipoMapa {
 
     game.addVisual(barraDeVida)     
     game.addVisual(barraDeEnergia)
+   if (self == mapaFinal) {
+        // Le decimos a la barra cuál es la vida máxima del boss
+        const boss = listaEnemigos.find({e => e.nombre() == "inquisidor"})
+        if (boss != null) {
+            barraVidaBoss.setearVidaMaxima(boss.vidaInicial())
+        }
+        game.addVisual(barraVidaBoss)
+    }
     game.addVisual(protagonista)
     protagonista.iniciar()
     controlacion.configuracionControles()
@@ -74,26 +83,30 @@ const tutorial = new TipoMapa(nivel = new Nivel(numero = 1), fondo = new FondoNi
 const bosque = new TipoMapa(nivel = new Nivel(numero = 2), fondo = new FondoNivel(imagen="bosques.png"), listaEnemigos = [hongo,hongoVolador,hongo2,hongo3],nombreMusica = "")
 const cueva = new TipoMapa(nivel = new Nivel(numero = 3), fondo = new FondoNivel(imagen="cueva2.png"), listaEnemigos = [murcielago,golem,golem2])
 const pantano = new TipoMapa(nivel = new Nivel(numero = 4), fondo = new FondoNivel(imagen="pantano2.png"), listaEnemigos = [sapo,sapo2,monstruo,monstruo2])
-//const mapaFinal = new TipoMapa(nivel = new Nivel(numero = 5), fondo = new FondoNivel(imagen="finalMap.png"), listaEnemigos = [hongo])
+const mapaFinal = new TipoMapa(nivel = new Nivel(numero = 5), fondo = new FondoNivel(imagen="fondoCapaz.png"), listaEnemigos = [judgeHolden])
 
 
 
 // 3. AL FINAL DE TODO, EL OBJETO PRINCIPAL QUE USA LO ANTERIOR
 object mapa {
-  const niveles=[tutorial,bosque,cueva,pantano]
+  const niveles=[tutorial,bosque,cueva,pantano,mapaFinal]
   var indiceNivel=0
   var nuevoMapa = tutorial
   
   method reiniciar(){
     nuevoMapa.detenerMusica()
+    game.removeVisual(barraVidaBoss)
     enemigos.reiniciarContador()
     indiceNivel=0
     nuevoMapa=niveles.get(indiceNivel)
     nuevoMapa.iniciar()
+
+    indiceNivel += 1
   }
 
   method siguienteMapa() {
     nuevoMapa.detenerMusica()
+   game.removeVisual(barraVidaBoss)
     if(indiceNivel<niveles.size()){
       nuevoMapa=niveles.get(indiceNivel)
       game.clear()

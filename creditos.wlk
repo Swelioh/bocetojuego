@@ -16,6 +16,6 @@ object credito {
 }
 
 object fondoCredito {
-    method position()= game.at(20,4)
-    method image() = "fondocredito.png"
+    method position()= game.at(0,0)
+    method image() = "fondoCreditos.png"
 }

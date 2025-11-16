@@ -71,6 +71,7 @@ class Enemigo{
     var property aceleracion = 0.05
     var property friccion = 0.03
     var property velocidadMaxima = 0.1
+    const property rangoDeAtaque = 1
 
     //----VARIABLES DE SONIDO---
     const sonidoGolpe = null
@@ -138,14 +139,14 @@ class Enemigo{
 
     
         const cambioDeMapa = enemigos.registrarMuerte(self) 
-      
+        mapa.mapaActual().listaEnemigos().remove(self)
      
 
     
         game.removeVisual(self)
       
         if (not cambioDeMapa) {
-            mapa.mapaActual().listaEnemigos().remove(self)
+            
             mapa.mapaActual().agregarEnemigos()
         }
         game.removeVisual(self)
@@ -199,7 +200,7 @@ class Enemigo{
     }
 }
 
-class EnemigoCaminador inherits Enemigo(soloDaniaAlAtacar=true) {
+class EnemigoCaminador inherits Enemigo(soloDaniaAlAtacar=true,rangoDeAtaque = 3) {
     var property radioDeAgresion = 10
     
 
@@ -345,7 +346,7 @@ const hongo3 = new EnemigoCaminador(nombre = "mushRoom", danioDeGolpes = 20, vid
 
 const murcielago = new EnemigoVolador(nombre = "bat", danioDeGolpes = 15, danioProyectil = 10, vidaInicial = 50,image = "batIzquierdaQuieto.png", velocidadX = 0.5, animMoviendose = 4,animGolpeado = 3,sonidoGolpe = "batHit.wav",positionInicial = game.at(15, 11),imagenProyectil = "proyectil_murcielago.png" )
 
-const hongoVolador = new EnemigoVolador(nombre = "hongoVolador", danioDeGolpes = 15, danioProyectil = 10, vidaInicial = 50,image = "hongoVoladorIzquierdaMoviendose1.png", velocidadX = 0.2, animMoviendose = 8,animGolpeado = 4,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(15, 11),imagenProyectil = "proyectil_hongoVolador.png" )
+const hongoVolador = new EnemigoVolador(nombre = "hongoVolador", danioDeGolpes = 15, danioProyectil = 10, vidaInicial = 50,image = "hongoVoladorIzquierdaMoviendose1.png", velocidadX = 0.2, animMoviendose = 8,animGolpeado = 4,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(15, 12),imagenProyectil = "proyectil_hongoVolador.png" )
 
 const golem = new EnemigoCaminador(nombre = "golem", danioDeGolpes = 10, vidaInicial = 150,vida = 150,image = "golemIzquierdaQuieto.png",animMoviendose = 10,animAtaque = 11,animGolpeado = 4,sonidoGolpe = "golemHit.wav",positionInicial = game.at(30, 1))
 const golem2 = new EnemigoCaminador(nombre = "golem", danioDeGolpes = 10, vidaInicial = 150,vida = 150,image = "golemIzquierdaQuieto.png",animMoviendose = 10,animAtaque = 11,animGolpeado = 4,sonidoGolpe = "golemHit.wav",positionInicial = game.at(45, 1))
@@ -355,3 +356,6 @@ const sapo2 = new EnemigoCaminador(nombre = "sapo", danioDeGolpes = 20, vidaInic
 
 const monstruo = new EnemigoVolador(nombre = "monstruo", danioDeGolpes = 15, danioProyectil = 10, vidaInicial = 50,image = "monstruoIzquierdaMoviendose1.png", velocidadX = 0.2, animMoviendose = 5,animGolpeado = 4,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(15, 11),imagenProyectil = "proyectil_hongoVolador.png" )
 const monstruo2 = new EnemigoVolador(nombre = "monstruo", danioDeGolpes = 15, danioProyectil = 10, vidaInicial = 50,image = "monstruoIzquierdaMoviendose1.png", velocidadX = 0.2, animMoviendose = 5,animGolpeado = 4,sonidoGolpe = "mushroomHit.wav",positionInicial = game.at(15, 11),imagenProyectil = "proyectil_hongoVolador.png" )
+
+
+

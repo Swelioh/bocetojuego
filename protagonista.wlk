@@ -263,12 +263,12 @@ object protagonista {
     method verificarColisionEnemigos() {
         if (timerInvencible <= 0 and not invenciblePorDash) {
        mapa.mapaActual().listaEnemigos().forEach({ enemigo=>
-            if (enemigo.estaVivo() and self.position().distance(enemigo.position()) < 1) {
-                if (not enemigo.soloDaniaAlAtacar() or (enemigo.soloDaniaAlAtacar() and enemigo.estaAtacando())) {
-                    const danioRecibido = enemigo.danioDeGolpes()
-				    var danioFinal = danioRecibido
+            if (enemigo.estaVivo() and self.position().distance(enemigo.position()) < 1.5) {
                 
-                    if (estaBloqueando) {
+                const danioRecibido = enemigo.danioDeGolpes()
+				var danioFinal = danioRecibido
+                
+                if (estaBloqueando) {
 						// Si está bloqueando, reduce el daño
 						danioFinal = danioRecibido * (1 - reduccionDeDanio) // Recibe solo el 25%
 						// Y gasta energía extra por el golpe
@@ -276,17 +276,17 @@ object protagonista {
 						// ACA DEBERIA IR  Sonido de "golpe en escudo"
 					}
                     
-                    self.restarVida(danioFinal)
+                self.restarVida(danioFinal)
                 //  Activamos la invencibilidad
-                    timerInvencible = duracionInvencible 
+                timerInvencible = duracionInvencible 
                   
                     // Llamamos al método de empujón
-                    self.recibirEmpujon(enemigo)
-                    if (not estaBloqueando or danioFinal > 0) { 
-                            timerInvencible = duracionInvencible 
-                            self.recibirEmpujon(enemigo)
+                self.recibirEmpujon(enemigo)
+                if (not estaBloqueando or danioFinal > 0) { 
+                        timerInvencible = duracionInvencible 
+                        self.recibirEmpujon(enemigo)
 					}
-                }
+                
             }
         })
         }
@@ -444,7 +444,7 @@ object protagonista {
             timerAtaque = duracionAtaque 
             movimientoHorizontal = false
 
-        const alcanceAtaque = 4 // Distancia a la que el ataque conecta.
+        const alcanceAtaque = 5 // Distancia a la que el ataque conecta.
         const danioAtaque = 25 // El daño que hace el ataque.
 
         // Comprobar si el ENEMIGO está dentro del alcance.

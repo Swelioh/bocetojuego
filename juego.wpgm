@@ -1,5 +1,5 @@
 import wollok.game.*
-import menu.*
+import  menu.*
 program JuicioDelInquisidorBlanco {
     // CONFIGURACIÓN INICIAL DEL JUEGO
     game.title("El juicio Del Inquisidor Blanco")

@@ -9,7 +9,7 @@ import controlacion.*
 import hud.*
 
 object menu {
-  const ancho = 56
+  const ancho = 54
   const alto = 25
   var reinicio = false
   var listenerAgregado = false
