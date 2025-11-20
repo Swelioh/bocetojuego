@@ -58,6 +58,7 @@ class Enemigo{
     var property animMoviendose = 1
     var property animGolpeado = 1
     var property animAtaque = 1
+    
 
     var property frameActual = 0
     var property estaMoviendose = false

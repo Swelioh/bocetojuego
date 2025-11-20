@@ -7,30 +7,29 @@ class Inquisidor inherits EnemigoCaminador {
     
     // --- Variables de Estado del Boss ---
     var faseActual = 1
-    
-    // Umbrales de vida para cambiar de fase
+
+    //  vida para cambiar de fase
     const vidaFase2 = vidaInicial * 0.7 
     const vidaFase3 = vidaInicial * 0.3
     
     // Timers para controlar sus acciones (para que no ataque sin parar)
     var timerAccion = 0 // Cooldown general entre acciones
-    var timerAtaqueActual = 0 // Duración de un ataque (ej. estocada)
+    var timerAtaqueActual = 0 // Duración de un ataque 
     var estaHaciendoParry = false
     
     method animacionEstocada() {
-    // Necesitarás las imágenes "inquisidorDerechaEstocada1.png", etc.
     return direccionHorizontal.animacionAtacando("inquisidor", 6)
 }
     
    override method actualizar() {
-    // 1. Lógica Heredada de Golpeado (Llama a super() primero para la animación de impacto)
+    //  Lógica Heredada de Golpeado (Llama a super() primero para la animación de impacto)
     super() 
 
-    // 2. Manejo de Timer de Ataque/Parry
+    //  Manejo de Timer de Ataque/Parry
     if (timerAtaqueActual > 0) {
         timerAtaqueActual -= 1
         const animacion = self.animacionEstocada()
-        const duracionTotal = 30 // El valor original de timerAtaqueActual
+        const duracionTotal = 25 // El valor original de timerAtaqueActual
         
         // (60 ticks / 6 frames = 10 ticks por frame)
         const ticksPorFrame = duracionTotal / animacion.size() 
@@ -46,7 +45,7 @@ class Inquisidor inherits EnemigoCaminador {
         }
     }
 
-    // 3. Bloque de Lógica Principal: Solo se ejecuta si el boss NO está ocupado
+    //  Bloque de Lógica Principal: Solo se ejecuta si el boss NO está ocupado
     // El boss está ocupado si: a) acaba de ser golpeado (timerImpacto > 0) O b) está atacando/en parry (timerAtaqueActual > 0).
     if (timerImpacto <= 0 && timerAtaqueActual <= 0) {
         
@@ -65,37 +64,37 @@ class Inquisidor inherits EnemigoCaminador {
     }
     // El método termina aquí de forma natural, sin el conflictivo 'return'.
 }
-    
+
+   
     // --- IA de la FASE 1 ---
     method comportamientoFase1() {
         const distancia = self.position().distance(protagonista.position())
         
         if (distancia > 10) {
-            // 1. Caminata Lenta: 
-            // Usa la IA de 'perseguir' que heredamos,
-            // pero su 'velocidadMaxima' (definida abajo) es muy baja.
+        
+        
+            
             self.perseguir()
             self.aplicarFisicaHorizontal()
         } else {
-            // 2. Está cerca: ¡Decide si atacar!
-            estaMoviendose = false // ¡Se detiene para ser imponente!
+            //  Está cerca: Decide si atacar
+            estaMoviendose = false // Se detiene 
             self.intentarEstocadaSimple()
         }
     }
     
     method intentarEstocadaSimple() {
         // (Lógica de ataque simple)
-        timerAccion = 90 // 120 ticks de cooldown antes de la próxima acción
-        timerAtaqueActual = 30// El ataque dura 60 ticks
+        timerAccion = 85 // 120 ticks de cooldown antes de la próxima acción
+        timerAtaqueActual = 25// El ataque dura 60 ticks
         
-        // (Aquí pondrías la animación de ataque)
-        // image = ...
+
         
         // (En el tick justo, haces el daño)
-        game.schedule(1200, { => // 1 seg
-             if (self.position().distance(protagonista.position()) < 15 && estaVivo) {
+        game.schedule(1150, { => // 1 seg
+             if (self.position().distance(protagonista.position()) < 12 && estaVivo) {
                 // (Aquí faltaría chequear la dirección, como en protagonista.atacar)
-                protagonista.restarVida(self.danioDeGolpes()) 
+                protagonista.recibirGolpe(self.danioDeGolpes(), self)
              }
         })
     }
@@ -109,7 +108,7 @@ class Inquisidor inherits EnemigoCaminador {
         } else {
             // Si no hago parry (o estoy en otra fase), recibo el golpe normal
             super(danio) //
-            // ¡Y actualizo mi barra de vida!
+            //  actualizo barra de vida
             barraVidaBoss.actualizarBarra(vida)
         }
     }
@@ -118,16 +117,16 @@ class Inquisidor inherits EnemigoCaminador {
         estaHaciendoParry = true
         timerAtaqueActual = 70 // Duración del parry + contraataque
         
-        // Sonido de "Clang!"
+        
         // game.sound("parry.wav").play()
         
         // Animación de bloqueo
         // image = "inquisidorBloqueo.png"
         
-        // Prograna el contraataque
+        //  el contraataque
         game.schedule(500, { => // Medio seg después
             if (estaVivo) {
-                // (Aquí va la lógica del contraataque rápido)
+                // falta
             }
         })
     }
@@ -139,10 +138,9 @@ class Inquisidor inherits EnemigoCaminador {
 }
 
 // --- Definición del Boss ---
-// ¡Lo añadimos al final de enemigos.wlk o en su propio archivo!
+//
 
 
-const inquisidor = new Inquisidor(nombre = "inquisidor", positionInicial = game.at(30, 1),danioDeGolpes = 25, vidaInicial = 300,vida = 300,image = "inquisidorIzquierdaQuieto.png",animMoviendose = 8,animAtaque = 11,animGolpeado = 4,sonidoGolpe = "golemHit.wav",velocidadMaxima = 0,radioDeAgresion=20)
+const inquisidor = new Inquisidor(nombre = "inquisidor", positionInicial = game.at(30, 1),danioDeGolpes = 25, vidaInicial = 300,vida = 300,image = "inquisidorIzquierdaQuieto.png",animMoviendose = 8,animAtaque = 11,animGolpeado = 4,sonidoGolpe = "golemHit.wav",velocidadMaxima = 0.05,radioDeAgresion=20)
 
 
-const judge = new EnemigoCaminador(nombre = "inquisidor", positionInicial = game.at(30, 1),danioDeGolpes = 0, vidaInicial = 300,vida = 300,image = "inquisidorIzquierdaQuieto.png",animMoviendose = 8,animAtaque =6,animGolpeado = 4,sonidoGolpe = "inquisidorGolpeado.wav",velocidadMaxima = 0.3)
