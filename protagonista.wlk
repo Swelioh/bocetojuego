@@ -27,10 +27,10 @@ object protagonista {
 
   // ------VARIABLES DE DAÑO Y EMPUJE 
     var timerInvencible = 0
-    const duracionInvencible = 45 // Ticks de invencibilidad (aprox 1.5 seg)
+    const duracionInvencible = 30 // Ticks de invencibilidad (aprox 1.5 seg)
     const fuerzaEmpujeVertical = 1  // Salto al ser golpeado (ajustable)
     const fuerzaEmpujeHorizontal = 4 // Empuje horizontal (ajustable)
-
+ 
 
 // --- VARIABLES DE ESCUDO (ENERGÍA) ---
 	var estaBloqueando = false
@@ -105,7 +105,7 @@ object protagonista {
     // --- Resetear estado de combate ---
     estaAtacando = false
     timerAtaque = 0
-    timerInvencible = 0 // <-- Esta es la variable que causaba el crash
+    timerInvencible = 0 
     
     // --- Resetear estado de escudo ---
     estaBloqueando = false
@@ -164,7 +164,7 @@ object protagonista {
 
     method intentarDash() {
     const costeEnergiaDash = 25
-    const distanciaDash = 5
+    const distanciaDash = 8
     const duracionDash = 8
     const sonidoDash = game.sound("dash.wav")
 
@@ -205,7 +205,7 @@ object protagonista {
         if (not estaVivo){
             // Usamos 'estaAtacando' como bandera.
         // Si no está "atacando" (bandera libre), ejecuta el bloque de muerte y pon la bandera.
-      if (not estaAtacando) { 
+      //if (not estaAtacando) { 
             mapa.mapaActual().detenerMusica()
             finDelJuego.sonarMusica()
             image = direccionHorizontal.imagenDerrotado("guerrero")
@@ -214,7 +214,7 @@ object protagonista {
             estaAtacando = true // <-- Marcamos la bandera para que no se repita
 
             
-        }
+       // }
         }
         else {
             self.actualizarEnergia()
@@ -261,35 +261,13 @@ object protagonista {
 	}
 
     method verificarColisionEnemigos() {
-        if (timerInvencible <= 0 and not invenciblePorDash) {
-       mapa.mapaActual().listaEnemigos().forEach({ enemigo=>
+      mapa.mapaActual().listaEnemigos().forEach({ enemigo =>
+            //
             if (enemigo.estaVivo() and self.position().distance(enemigo.position()) < 1.5) {
-                
-                const danioRecibido = enemigo.danioDeGolpes()
-				var danioFinal = danioRecibido
-                
-                if (estaBloqueando) {
-						// Si está bloqueando, reduce el daño
-						danioFinal = danioRecibido * (1 - reduccionDeDanio) // Recibe solo el 25%
-						// Y gasta energía extra por el golpe
-						self.gastarEnergia(costeGolpeEscudo) 
-						// ACA DEBERIA IR  Sonido de "golpe en escudo"
-					}
-                    
-                self.restarVida(danioFinal)
-                //  Activamos la invencibilidad
-                timerInvencible = duracionInvencible 
-                  
-                    // Llamamos al método de empujón
-                self.recibirEmpujon(enemigo)
-                if (not estaBloqueando or danioFinal > 0) { 
-                        timerInvencible = duracionInvencible 
-                        self.recibirEmpujon(enemigo)
-					}
-                
+                // Llama al método centralizado
+                self.recibirGolpe(enemigo.danioDeGolpes(), enemigo)
             }
         })
-        }
         }
 
 
@@ -374,27 +352,27 @@ object protagonista {
             // Si NO está en el suelo, usa la animación AÉREA
             animacion = self.obtenerAnimacionAtaqueAereo()
         } else {
-            // Si SÍ está en el suelo, usa la animación normal
+            // Si  está en el suelo, usa la animación normal
             animacion = self.obtenerAnimacionAtaque()
         }
         
-        // 2. Calcula cuántos ticks dura cada frame de la animación.
+        // Calcula cuántos ticks dura cada frame de la animación.
         const ticksPorFrame = duracionAtaque / animacion.size()
 
-        // 3. Calcula el índice del frame actual basándote en el tiempo transcurrido.
+        // Calcula el índice del frame actual basándote en el tiempo transcurrido.
         const tiempoPasado = duracionAtaque - timerAtaque
         var frameIndex = (tiempoPasado / ticksPorFrame).floor()
         
         // 4. Medida de seguridad para evitar errores si el cálculo falla.
         frameIndex = frameIndex.min(animacion.size() - 1)
         
-        // 5. Muestra la imagen correcta de la lista.
+        // Muestra la imagen correcta de la lista.
         image = animacion.get(frameIndex)
 
-        // 6. Reduce el timer.
+        // Reduce el timer.
         timerAtaque -= 1
         
-        // 7. Si el timer llega a cero, el ataque termina.
+        // Si el timer llega a cero, el ataque termina.
         if (timerAtaque <= 0) {
             estaAtacando = false
         }
@@ -444,7 +422,7 @@ object protagonista {
             timerAtaque = duracionAtaque 
             movimientoHorizontal = false
 
-        const alcanceAtaque = 5 // Distancia a la que el ataque conecta.
+        const alcanceAtaque = 5.5 // Distancia a la que el ataque conecta.
         const danioAtaque = 25 // El daño que hace el ataque.
 
         // Comprobar si el ENEMIGO está dentro del alcance.
@@ -455,5 +433,30 @@ object protagonista {
         }
         })
     }
+    }
+
+
+    method recibirGolpe(danioRecibido, enemigo) {
+        // Solo nos golpean si no somos invencibles
+        if (timerInvencible <= 0 and not invenciblePorDash) {
+            
+            var danioFinal = danioRecibido
+            
+            // Lógica de bloqueo
+            if (estaBloqueando) { //
+                danioFinal = danioRecibido * (1 - reduccionDeDanio)
+                self.gastarEnergia(costeGolpeEscudo) //
+            }
+            
+            // Quitar vida
+            self.restarVida(danioFinal) //
+            
+            
+            // Solo se activa si el golpe hizo daño (no fue 100% bloqueado)
+            if (not estaBloqueando or danioFinal > 0) { 
+                timerInvencible = duracionInvencible // ¡Activa el parpadeo!
+                self.recibirEmpujon(enemigo) // ¡Activa el empujón!
+            }
+        }
     }
 }
